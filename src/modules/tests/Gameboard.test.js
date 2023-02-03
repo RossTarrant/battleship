@@ -2,19 +2,25 @@ import { Gameboard } from "../Gameboard";
 import { Ship } from "../Ship";
 
 describe('Gameboard Factory Testing', () => {
-
-    test('Ship is placed correctly on coordinates (X Axis)', () => {
+    
+    test('Ship is placed successfully on coordinates (X Axis)', () => {
         const gameboard = Gameboard();
         const ship = Ship(3);
         expect(gameboard.placeShip('0,0', ship, 'X')).toBe(true);
-        expect(gameboard.placeShip('0,0', ship, 'X')).toBe(null);
     });
     
-    test('Ship is placed correctly on coordinates (Y Axis)', () => {
+    test('Ship is placed successfully on coordinates (Y Axis)', () => {
         const gameboard = Gameboard();
         const ship = Ship(3);
         expect(gameboard.placeShip('0,0', ship, 'Y')).toBe(true);
-        expect(gameboard.placeShip('0,0', ship, 'Y')).toBe(null);
+    });
+
+    test('Ships cannot overlap by being placed on the same coordinates', () => {
+        const gameboard = Gameboard();
+        const ship = Ship(3);
+        expect(gameboard.placeShip('0,0', ship, 'Y')).toBe(true);
+        const secondShip = Ship(2);
+        expect(gameboard.placeShip('0,0', secondShip, 'Y')).toBe(null);
     });
 
     test('Ship is placed outside of X axis boundaries', () => {
@@ -43,6 +49,23 @@ describe('Gameboard Factory Testing', () => {
         gameboard.placeShip('0,0', ship, 'X');
         gameboard.receiveAttack('0,0');
         expect(ship.hits).toBe(1);
+    });
+
+    test('Gameboard reports when all ships are sunk', () => {
+        const gameboard = Gameboard();
+        const ship = Ship(3);
+        gameboard.placeShip('0,0', ship, 'X');
+        gameboard.receiveAttack('0,0');
+        gameboard.receiveAttack('1,0');
+        gameboard.receiveAttack('2,0');
+        expect(gameboard.allShipsSunk()).toBe(true);
+    });
+
+    test('Gameboard reports false when all ships are not sunk', () => {
+        const gameboard = Gameboard();
+        const ship = Ship(3);
+        gameboard.placeShip('0,0', ship, 'X');
+        expect(gameboard.allShipsSunk()).toBe(false);
     });
 
 })

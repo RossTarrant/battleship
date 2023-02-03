@@ -12,7 +12,7 @@ export const Gameboard = () => {
     }
 
     let board = buildBoard();
-
+    let ships = [];
     let missedAttacks = [];
 
     const placeShip = (coord, ship, axis) => {
@@ -45,6 +45,7 @@ export const Gameboard = () => {
         for(let placement of toPlace){
             board.set(placement, ship);
         }
+        ships.push(ship);
         return true;
     }
 
@@ -58,9 +59,12 @@ export const Gameboard = () => {
     }
 
     const allShipsSunk = function(){
-
-
-
+        for(let ship of ships){
+            if(ship.isSunk()===false){
+                return false;
+            }
+        }
+        return true;
     }
 
     return {receiveAttack, allShipsSunk, missedAttacks, placeShip};
