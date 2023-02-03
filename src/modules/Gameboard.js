@@ -15,13 +15,19 @@ export const Gameboard = () => {
 
     let missedAttacks = [];
 
-    
+    const placeShip = (coords, ship) => {
+        for(let coord of coords){
+            board.set(coord, ship)
+        }
+    }
 
-    const receiveAttack = function(coords){
-        if(board.get(coords)===null){
+    const receiveAttack = (coords) => {
+        if(board.get(coords)===null && !missedAttacks.includes(coords)){
             missedAttacks.push(coords);
         }
-    
+        else if(board.get(coords).hasOwnProperty('hits')){
+            board.get(coords).hit();
+        }
     }
 
     const allShipsSunk = function(){
@@ -30,6 +36,6 @@ export const Gameboard = () => {
 
     }
 
-    return {receiveAttack, allShipsSunk, missedAttacks};
+    return {receiveAttack, allShipsSunk, missedAttacks, placeShip};
 
 }
