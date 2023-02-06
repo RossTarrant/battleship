@@ -14,6 +14,7 @@ export const Gameboard = () => {
     let board = buildBoard();
     let ships = [];
     let missedAttacks = [];
+    let successfulAttacks = [];
 
     const placeShip = (coord, ship, axis) => {
         const coords = coord.split(',');
@@ -52,9 +53,12 @@ export const Gameboard = () => {
     const receiveAttack = (coords) => {
         if(board.get(coords)===null && !missedAttacks.includes(coords)){
             missedAttacks.push(coords);
+            return false;
         }
         else if(board.get(coords).hasOwnProperty('hits')){
             board.get(coords).hit();
+            successfulAttacks.push(coords);
+            return true;
         }
     }
 
@@ -67,6 +71,6 @@ export const Gameboard = () => {
         return true;
     }
 
-    return {receiveAttack, allShipsSunk, missedAttacks, placeShip};
+    return {receiveAttack, allShipsSunk, missedAttacks, placeShip, board};
 
 }
