@@ -35,6 +35,7 @@ export class controller{
 
     winGame(){
         this.gameActive = false;
+        //
     }
 
     addClickHandler(compBoard){
