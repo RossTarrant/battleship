@@ -6,33 +6,43 @@ import {UI} from "../modules/UI";
 export class controller{
 
     constructor(){
-        let player = Player('Player 1', 'player');
-        let computer = Player('Computer', 'comp');
-        let playerBoard = Gameboard();
-        let compBoard = Gameboard();
-        let gamePhase = 'place';
-        this.testPlaceShips(playerBoard, compBoard);
-        const myUI = new UI();
-        myUI.renderHeader(player.getName(), computer.getName());
-        myUI.renderBoards(playerBoard, compBoard);
-        this.addClickHandler(compBoard);
+        this.player = Player('Player 1', 'player');
+        this.computer = Player('Computer', 'comp');
+        this.playerBoard = Gameboard();
+        this.compBoard = Gameboard();
+        this.gamePhase = 'place';
+        this.testPlaceShips(this.playerBoard, this.compBoard);
+        this.myUI = new UI();
+        this.myUI.renderHeader(this.player.getName(), this.computer.getName());
+        this.myUI.renderBoards(this.playerBoard, this.compBoard);
+        this.addClickHandler(this.compBoard);
+    }
+
+    takeTurn(cell, x, y){
+        // MAKE PLAYER ATTACK
+        this.player.attack(this.compBoard,`${x},${y}`);
+        // CHECK FOR WIN
+        console.log(this.compBoard.allShipsSunk());
+        // COMPUTER MAKE PLAY
+        this.computer.attack(this.playerBoard);
+        // CHECK FOR WIN
+
+        // REFRESH UI
+        this.myUI.deleteBoards();
+        this.myUI.renderBoards(this.playerBoard, this.compBoard);
+        this.addClickHandler(this.compBoard);
+
     }
 
     addClickHandler(compBoard){
-        const cells = document.querySelectorAll('.gb-comp-cell')
+        const cells = document.querySelectorAll('.gb-comp-cell');
         for(let i = 0; i < cells.length; i++){
             let cell = cells[i];
             let x = Math.floor(i/10);
             let y = i % 10;
             cell.addEventListener('click', () => {
-                if(compBoard.receiveAttack(`${x},${y}`)===true){
-                    cell.classList.add('gb-cell-hit');
-                }
-                else{
-                    cell.classList.add('gb-cell-miss');
-                    cell.textContent = 'X'
-                }
-            })
+                this.takeTurn(cell, x, y)
+            });
         }
     }
 

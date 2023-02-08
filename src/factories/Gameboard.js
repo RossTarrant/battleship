@@ -71,6 +71,6 @@ export const Gameboard = () => {
         return true;
     }
 
-    return {receiveAttack, allShipsSunk, missedAttacks, placeShip, board};
+    return {receiveAttack, allShipsSunk, missedAttacks, successfulAttacks, placeShip, board};
 
 }

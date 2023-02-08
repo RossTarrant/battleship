@@ -22,24 +22,28 @@ body{
     display: flex;
 }
 
-.gb-cell, .gb-comp-cell, .gb-cell-player-ship{
+.gb-cell, .gb-comp-cell{
     width: 30px;
     height: 30px;
     background-color: rgb(109, 225, 238);
     border: solid 1px black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
 }
 
 .gb-cell-player-ship{
     background-color: red;
 }
 
+.gb-cell-player-hit{
+    background-color: orange;
+}
+
 .gb-cell-miss{
     background-color: rgba(75, 167, 178, 0.996);
     color: red;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
 }
 
 .gb-cell-hit{

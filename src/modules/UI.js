@@ -9,6 +9,14 @@ export class UI{
         content.appendChild(this.getComputerBoardNode(gameboard2));
     }
 
+    deleteBoards(){
+        const content = document.querySelector('.content');
+        const playerGrid = document.querySelector('.gb-grid');
+        const compGrid = document.querySelector('.gb-comp-grid');
+        content.removeChild(playerGrid);
+        content.removeChild(compGrid);
+    }
+
     renderHeader(name1, name2, status='It is Player 1s turn!'){
         const header = document.querySelector('.header');
         const heading = document.createElement('h1');
@@ -32,11 +40,17 @@ export class UI{
             row.classList.add('gb-row');
             for(let j = 0; j < 10; j ++){
                 const cell = document.createElement('div');
-                if(gameboard.board.get(`${i},${j}`)!=null){
-                    cell.classList.add('gb-cell-player-ship');
+                cell.classList.add('gb-cell');
+                if(gameboard.successfulAttacks.includes(`${i},${j}`)){
+                    cell.classList.add('gb-cell-player-hit');
+                    cell.textContent = 'O';
                 }
-                else{
-                    cell.classList.add('gb-cell');
+                else if(gameboard.missedAttacks.includes(`${i},${j}`)){
+                    cell.classList.add('gb-cell-miss');
+                    cell.textContent = 'X';
+                }
+                else if(gameboard.board.get(`${i},${j}`)!=null){
+                    cell.classList.add('gb-cell-player-ship');
                 }
                 row.appendChild(cell);
             }
@@ -58,6 +72,13 @@ export class UI{
             for(let j = 0; j < 10; j ++){
                 const cell = document.createElement('div');
                 cell.classList.add('gb-comp-cell');
+                if(gameboard.missedAttacks.includes(`${i},${j}`)){
+                    cell.classList.add('gb-cell-miss');
+                    cell.textContent = 'X';
+                }
+                else if(gameboard.successfulAttacks.includes(`${i},${j}`)){
+                    cell.classList.add('gb-cell-hit');
+                }
                 row.appendChild(cell);
             }
             grid.appendChild(row);

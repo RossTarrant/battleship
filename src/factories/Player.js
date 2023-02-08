@@ -6,11 +6,11 @@ export const Player = (name, type) => {
         return playerName;
     }
 
-    const attack = function(coords, board){ 
-        playerType === 'player' ? playerAttack(coords, board): compAttack(board);
+    const attack = function(board, coords){ 
+        playerType === 'player' ? playerAttack(board, coords): compAttack(board);
     }
 
-    const playerAttack = function(coords, board){
+    const playerAttack = function(board, coords){
         board.receiveAttack(coords);
     }
 
