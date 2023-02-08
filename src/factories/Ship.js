@@ -2,7 +2,9 @@ export const Ship = (len) => {
     const length = len;
     let hits = 0;
     const hit = function(){
-        this.hits += 1;
+        if(this.hits<this.length){
+            this.hits += 1;
+        }
     }
 
     const isSunk = function(){

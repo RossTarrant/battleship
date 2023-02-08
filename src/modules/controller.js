@@ -10,7 +10,7 @@ export class controller{
         this.computer = Player('Computer', 'comp');
         this.playerBoard = Gameboard();
         this.compBoard = Gameboard();
-        this.gamePhase = 'place';
+        this.gameActive = true;
         this.testPlaceShips(this.playerBoard, this.compBoard);
         this.myUI = new UI();
         this.myUI.renderHeader(this.player.getName(), this.computer.getName());
@@ -22,16 +22,19 @@ export class controller{
         // MAKE PLAYER ATTACK
         this.player.attack(this.compBoard,`${x},${y}`);
         // CHECK FOR WIN
-        console.log(this.compBoard.allShipsSunk());
+        if(this.compBoard.allShipsSunk()){this.winGame()};
         // COMPUTER MAKE PLAY
         this.computer.attack(this.playerBoard);
         // CHECK FOR WIN
-
+        this.playerBoard.allShipsSunk();
         // REFRESH UI
         this.myUI.deleteBoards();
         this.myUI.renderBoards(this.playerBoard, this.compBoard);
         this.addClickHandler(this.compBoard);
+    }
 
+    winGame(){
+        this.gameActive = false;
     }
 
     addClickHandler(compBoard){
@@ -41,7 +44,7 @@ export class controller{
             let x = Math.floor(i/10);
             let y = i % 10;
             cell.addEventListener('click', () => {
-                this.takeTurn(cell, x, y)
+                if(this.gameActive){this.takeTurn(cell, x, y)};
             });
         }
     }
