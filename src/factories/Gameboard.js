@@ -33,7 +33,7 @@ export const Gameboard = () => {
             }
         }
         else if(axis==='Y'){
-            for(let i = 0; i < ship.length+1; i++){
+            for(let i = 0; i < ship.length; i++){
                 if(board.get(`${[xCoord,yCoord]}`)===null && yCoord < 10){
                     toPlace.push(`${[xCoord,yCoord]}`);
                     yCoord++;
