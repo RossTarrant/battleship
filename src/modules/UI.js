@@ -17,6 +17,12 @@ export class UI{
         content.removeChild(compGrid);
     }
 
+    deletePlacementBoard(){
+        const content = document.querySelector('.content');
+        const playerGrid = document.querySelector('.gb-grid');
+        content.removeChild(playerGrid); 
+    }
+
     renderHeader(name1, name2, status='It is Player 1s turn!'){
         const header = document.querySelector('.header');
         const heading = document.createElement('h1');
@@ -30,6 +36,53 @@ export class UI{
         header.appendChild(heading);
         header.appendChild(versus);
         header.appendChild(turn);
+    }
+
+    deleteHeader(){
+        const header = document.querySelector('.header');
+        const heading = document.querySelector('.heading');
+        header.removeChild(heading); 
+    }
+
+    renderPlacement(gameboard){
+        const content = document.querySelector('.content');
+        content.appendChild(this.getPlayerBoardNode(gameboard));
+    }
+
+    renderPlacementHeader(shipsLeft, currentShipLength){
+        const header = document.querySelector('.header');
+        const heading = document.createElement('div');
+        heading.classList.add('heading');
+        const title = document.createElement('h1');
+        title.textContent= 'Battleship';
+        const shipsToPlace = document.createElement('div');
+        const shipLength = document.createElement('div');
+        shipsToPlace.textContent = `You have ${shipsLeft} ships left to place...`;
+        shipLength.textContent = `The current ship you are placing will have a length of ${currentShipLength}`;
+        const axisbuttons = document.createElement('div');
+        const xAxisButton = document.createElement('div');
+        const yAxisButton = document.createElement('div'); 
+        axisbuttons.classList.add('axis-button-container');
+        xAxisButton.classList.add('axis-button');
+        xAxisButton.classList.add('axis-button-active');
+        yAxisButton.classList.add('axis-button');
+        xAxisButton.textContent = 'X';
+        yAxisButton.textContent = 'Y';
+        xAxisButton.addEventListener('click', () => {
+            xAxisButton.classList.add('axis-button-active');
+            yAxisButton.classList.remove('axis-button-active');
+        })
+        yAxisButton.addEventListener('click', () => {
+            yAxisButton.classList.add('axis-button-active');
+            xAxisButton.classList.remove('axis-button-active');
+        })
+        axisbuttons.appendChild(xAxisButton);
+        axisbuttons.appendChild(yAxisButton);
+        heading.appendChild(title);
+        heading.appendChild(shipsToPlace);
+        heading.appendChild(shipLength);
+        heading.appendChild(axisbuttons);
+        header.appendChild(heading);
     }
 
     getPlayerBoardNode(gameboard){

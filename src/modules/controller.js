@@ -6,16 +6,21 @@ import {UI} from "../modules/UI";
 export class controller{
 
     constructor(){
+        // Setup players
         this.player = Player('Player 1', 'player');
         this.computer = Player('Computer', 'comp');
+        // Create gameboard for each player
         this.playerBoard = Gameboard();
         this.compBoard = Gameboard();
         this.gameActive = true;
-        this.testPlaceShips(this.playerBoard, this.compBoard);
+        this.shipsPlaced = 0;
+        // Create X/Y axis buttons
+        // Add click event handler
+        // Add hover event handler
+        // Place ships
+        //this.testPlaceShips(this.playerBoard, this.compBoard);
         this.myUI = new UI();
-        this.myUI.renderHeader(this.player.getName(), this.computer.getName());
-        this.myUI.renderBoards(this.playerBoard, this.compBoard);
-        this.addClickHandler(this.compBoard);
+        this.placement();
     }
 
     takeTurn(cell, x, y){
@@ -33,9 +38,48 @@ export class controller{
         this.addClickHandler(this.compBoard);
     }
 
+    placement(){
+        let shipLengths = [2,3,3,4,5];
+        this.myUI.renderPlacementHeader(5 - this.shipsPlaced, shipLengths[this.shipsPlaced]);
+        this.myUI.renderPlacement(this.playerBoard);
+        this.addPlacementHandlers();
+    }
+
+    gameBegin(){
+        this.myUI.deleteHeader();
+        this.myUI.deletePlacementBoard();
+        this.myUI.renderHeader(this.player.getName(), this.computer.getName());
+        this.myUI.renderBoards(this.playerBoard, this.compBoard);
+        this.addClickHandler(this.compBoard);
+    }
+
     winGame(){
         this.gameActive = false;
-        //
+        alert('Player wins!')
+    }
+
+    addPlacementHandlers(){
+        const cells = document.querySelectorAll('.gb-cell');
+        for(let i = 0; i < cells.length; i++){
+            let cell = cells[i];
+            let x = Math.floor(i/10);
+            let y = i % 10;
+            cell.addEventListener('click', () => {
+                let shipLengths = [2,3,3,4,5];
+                let axis = document.querySelector('.axis-button-active').textContent;
+                console.log(axis)
+                if(this.shipsPlaced < 5){
+                    const ship = Ship(shipLengths[this.shipsPlaced]);
+                    if(this.playerBoard.placeShip(`${x},${y}`, ship, axis)!==null){this.shipsPlaced++;}
+                    this.myUI.deletePlacementBoard();
+                    this.myUI.deleteHeader();
+                    this.placement();
+                }
+                if(this.shipsPlaced===5){
+                    this.gameBegin();
+                }
+            });
+        }
     }
 
     addClickHandler(compBoard){

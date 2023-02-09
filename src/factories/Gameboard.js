@@ -21,7 +21,7 @@ export const Gameboard = () => {
         let xCoord = parseInt(coords[0]);
         let yCoord = parseInt(coords[1]);
         let toPlace = [];
-        if(axis==='X'){
+        if(axis==='Y'){
             for(let i = 0; i < ship.length; i++){
                 if(board.get(`${[xCoord,yCoord]}`)===null && xCoord < 10){
                     toPlace.push(`${[xCoord,yCoord]}`);
@@ -32,7 +32,7 @@ export const Gameboard = () => {
                 }
             }
         }
-        else if(axis==='Y'){
+        else if(axis==='X'){
             for(let i = 0; i < ship.length; i++){
                 if(board.get(`${[xCoord,yCoord]}`)===null && yCoord < 10){
                     toPlace.push(`${[xCoord,yCoord]}`);
@@ -71,6 +71,6 @@ export const Gameboard = () => {
         return true;
     }
 
-    return {receiveAttack, allShipsSunk, missedAttacks, successfulAttacks, placeShip, board};
+    return {receiveAttack, allShipsSunk, missedAttacks, successfulAttacks, placeShip, board, ships};
 
 }
