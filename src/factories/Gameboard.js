@@ -1,4 +1,4 @@
-export const Gameboard = () => {
+export const Gameboard = (status) => {
 
     const buildBoard = () => {
         let board = new Map();
@@ -53,11 +53,13 @@ export const Gameboard = () => {
     const receiveAttack = (coords) => {
         if(board.get(coords)===null && !missedAttacks.includes(coords)){
             missedAttacks.push(coords);
+            status.setStatus('attack missed!')
             return false;
         }
         else if(board.get(coords).hasOwnProperty('hits')){
             board.get(coords).hit();
             successfulAttacks.push(coords);
+            status.setStatus('attack hit a ship!')
             return true;
         }
     }

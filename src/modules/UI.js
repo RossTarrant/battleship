@@ -27,19 +27,22 @@ export class UI{
         content.removeChild(playerGrid); 
     }
 
-    renderHeader(name1, name2, status='It is Player 1s turn!'){
+    renderHeader(name, status){
         const header = document.querySelector('.header');
-        const heading = document.createElement('h1');
-        heading.textContent= 'Battleship';
-        const versus = document.createElement('div');
-        versus.classList.add('versus');
-        versus.textContent = `${name1} vs ${name2}`;
-        const turn = document.createElement('div');
-        turn.classList.add('turn');
-        turn.textContent = status;
+        const heading = document.createElement('div');
+        heading.classList.add('heading')
+        const title = document.createElement('h1');
+        title.textContent= 'Battleship';
+        const turnA = document.createElement('div');
+        turnA.classList.add('turnA');
+        turnA.textContent = name==='Player' ? 'It is the Computers turn!' : 'It is the Players turn!';
+        const turnB = document.createElement('div');
+        turnB.classList.add('turnB');
+        turnB.textContent = status===undefined ? '' : `${name}'s ${status}`;
+        heading.appendChild(title);
+        heading.appendChild(turnA);
+        heading.appendChild(turnB);
         header.appendChild(heading);
-        header.appendChild(versus);
-        header.appendChild(turn);
     }
 
     deleteHeader(){
@@ -61,6 +64,8 @@ export class UI{
         title.textContent= 'Battleship';
         const shipsToPlace = document.createElement('div');
         const shipLength = document.createElement('div');
+        shipsToPlace.classList.add('ship-toplace-msg');
+        shipLength.classList.add('ship-length-msg');
         shipsToPlace.textContent = `You have ${shipsLeft} ships left to place...`;
         shipLength.textContent = `The current ship you are placing will have a length of ${currentShipLength}`;
         const axisbuttons = document.createElement('div');

@@ -2,34 +2,41 @@ import {Gameboard} from "../factories/Gameboard";
 import {Ship} from "../factories/Ship";
 import {Player} from "../factories/Player";
 import {UI} from "../modules/UI";
+import { status } from "../modules/status";
 
 export class controller{
 
     constructor(){
         // Setup players
-        this.player = Player('Player 1', 'player');
+        this.player = Player('Player', 'player');
         this.computer = Player('Computer', 'comp');
+        this.currentStatus = new status();
         // Create gameboard for each player
-        this.playerBoard = Gameboard();
-        this.compBoard = Gameboard();
+        this.playerBoard = Gameboard(this.currentStatus);
+        this.compBoard = Gameboard(this.currentStatus);
         this.gameActive = true;
         this.shipsPlaced = 0;
-        // Add hover event handler
-        //this.testPlaceShips(this.playerBoard, this.compBoard);
         this.myUI = new UI();
         this.placement();
     }
 
     takeTurn(x, y){
-        // MAKE PLAYER ATTACK
         this.player.attack(this.compBoard,`${x},${y}`);
-        // CHECK FOR WIN
         if(this.compBoard.allShipsSunk()){this.winGame(this.player.getName())};
-        // COMPUTER MAKE PLAY
+        this.myUI.deleteHeader();
+        this.myUI.renderHeader(this.player.getName(), this.currentStatus.getStatus())
+        this.myUI.deleteBoards();
+        this.myUI.renderBoards(this.playerBoard, this.compBoard);
+        setTimeout(() => {
+            this.computerAttack();
+        }, 1500);
+    }
+
+    computerAttack(){
         this.computer.attack(this.playerBoard);
-        // CHECK FOR WIN
         if(this.playerBoard.allShipsSunk()){this.winGame(this.computer.getName())};
-        // REFRESH UI
+        this.myUI.deleteHeader();
+        this.myUI.renderHeader(this.computer.getName(), this.currentStatus.getStatus())
         this.myUI.deleteBoards();
         this.myUI.renderBoards(this.playerBoard, this.compBoard);
         this.addClickHandler(this.compBoard);
@@ -47,7 +54,7 @@ export class controller{
         this.myUI.deleteHeader();
         this.myUI.deletePlacementBoard();
         this.placeCompShips(this.compBoard);
-        this.myUI.renderHeader(this.player.getName(), this.computer.getName());
+        this.myUI.renderHeader(this.computer.getName(), this.status);
         this.myUI.renderBoards(this.playerBoard, this.compBoard);
         this.addClickHandler(this.compBoard);
     }
@@ -118,17 +125,21 @@ export class controller{
         }
     }
 
-    placeCompShips(compBoard){
-        let shipA = Ship(3);
-        let shipB = Ship(5);
-        let shipC = Ship(4);
-        let shipD = Ship(2);
-        let shipE = Ship(3);
-        compBoard.placeShip('5,2', shipA, 'X');
-        compBoard.placeShip('0,0', shipB, 'Y');
-        compBoard.placeShip('4,4', shipC, 'X');
-        compBoard.placeShip('1,6', shipD, 'Y');
-        compBoard.placeShip('6,6', shipE, 'X');
+    randomCoord = function(){
+        const x = Math.floor(Math.random() * 10);
+        const y = Math.floor(Math.random() * 10);
+        return `${[x,y]}`;
     }
 
+    placeCompShips(compBoard){
+        let shipLengths = [2,3,3,4,5]
+        for(let i = 0; i < shipLengths.length; i++){
+            let ship = Ship(shipLengths[i]);
+            let coord = this.randomCoord();
+            let axis = (Math.floor(Math.random() * 2)) === 0 ? 'X' : 'Y'; 
+            while (compBoard.placeShip(coord, ship, axis)===false){
+                coord = this.randomCoord();
+            }
+        }
+    }
 }

@@ -76,3 +76,12 @@ body{
 .axis-button:hover{
     cursor: pointer;
 }
+
+.ship-toplace-msg, .ship-length-msg{
+    font-size: 24px;
+}
+
+.turnA, .turnB{
+    font-size: 24px;
+    margin: 20px;
+}
