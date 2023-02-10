@@ -29,7 +29,7 @@ export class controller{
         this.myUI.renderBoards(this.playerBoard, this.compBoard);
         setTimeout(() => {
             this.computerAttack();
-        }, 1500);
+        }, 0);
     }
 
     computerAttack(){
@@ -136,8 +136,8 @@ export class controller{
         for(let i = 0; i < shipLengths.length; i++){
             let ship = Ship(shipLengths[i]);
             let coord = this.randomCoord();
-            let axis = (Math.floor(Math.random() * 2)) === 0 ? 'X' : 'Y'; 
-            while (compBoard.placeShip(coord, ship, axis)===false){
+            let axis = (Math.floor(Math.random() * 2)) === 1 ? 'X' : 'Y'; 
+            while (compBoard.placeShip(coord, ship, axis)===null){
                 coord = this.randomCoord();
             }
         }
