@@ -23,8 +23,8 @@ export const Player = (name, type) => {
     }
 
     const randomCoord = function(){
-        const x = Math.floor(Math.random() * 8);
-        const y = Math.floor(Math.random() * 8);
+        const x = Math.floor(Math.random() * 10);
+        const y = Math.floor(Math.random() * 10);
         return `${[x,y]}`;
     }
 

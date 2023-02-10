@@ -1,5 +1,9 @@
 export class UI{
 
+    constructor(){
+        this.axis = 'X';
+    }
+
     renderBoards(gameboard1, gameboard2){
         // Creating the first board
         const content = document.querySelector('.content');
@@ -64,17 +68,19 @@ export class UI{
         const yAxisButton = document.createElement('div'); 
         axisbuttons.classList.add('axis-button-container');
         xAxisButton.classList.add('axis-button');
-        xAxisButton.classList.add('axis-button-active');
+        this.axis === 'X' ? xAxisButton.classList.add('axis-button-active') : yAxisButton.classList.add('axis-button-active');
         yAxisButton.classList.add('axis-button');
         xAxisButton.textContent = 'X';
         yAxisButton.textContent = 'Y';
         xAxisButton.addEventListener('click', () => {
             xAxisButton.classList.add('axis-button-active');
             yAxisButton.classList.remove('axis-button-active');
+            this.axis = 'X';
         })
         yAxisButton.addEventListener('click', () => {
             yAxisButton.classList.add('axis-button-active');
             xAxisButton.classList.remove('axis-button-active');
+            this.axis = 'Y';
         })
         axisbuttons.appendChild(xAxisButton);
         axisbuttons.appendChild(yAxisButton);
