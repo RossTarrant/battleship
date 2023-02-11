@@ -1,5 +1,3 @@
-import { Gameboard } from "../factories/Gameboard";
-
 export class AI{
     constructor(board){
         this.knownHits = [];
@@ -9,11 +7,9 @@ export class AI{
     }
 
     getMove(gameboard){
-        // If no known hits, return random coordinate
         let coord = this.randomCoord(gameboard);
         
         if(gameboard.board.get(this.lastShot)?.isSunk()===true){
-            console.log(123)
             this.queue = [];
         }
 
@@ -38,13 +34,11 @@ export class AI{
 
     cleanQueue(queue){
         let toReturn = [];
-        console.log('Queue', queue)
         for(let coord of queue){
             if(!(this.hitAttempts.includes(coord))){
                 toReturn.push(coord);
             }
         }
-        console.log('ToReturn - ', toReturn)
         return toReturn;
     }
     

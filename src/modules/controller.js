@@ -120,7 +120,9 @@ export class controller{
             let x = Math.floor(i/10);
             let y = i % 10;
             cell.addEventListener('click', () => {
-                if(this.gameActive){this.takeTurn(x, y)};
+                if(!(compBoard.missedAttacks.includes(`${x},${y}`)) && !(compBoard.successfulAttacks.includes(`${x},${y}`))){
+                    if(this.gameActive){this.takeTurn(x, y)};
+                }
             });
         }
     }
