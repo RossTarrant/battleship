@@ -96,6 +96,31 @@ export class UI{
         header.appendChild(heading);
     }
 
+    renderWinnerFooter(winner){
+        const footer = document.querySelector('.footer');
+
+        const footerContent = document.createElement('div');
+        footerContent.classList.add('footer-content');
+
+        const winnerTxt = document.createElement('div')
+        winnerTxt.classList.add('footer-text');
+        winnerTxt.textContent = `${winner} wins! Click the restart button to play again!`;
+
+        const restartBtn = document.createElement('div');
+        restartBtn.classList.add('footer-restartBtn');
+        restartBtn.textContent = 'Restart Game';
+
+        footerContent.appendChild(winnerTxt);
+        footerContent.appendChild(restartBtn);
+        footer.appendChild(footerContent);
+    }
+
+    deleteFooter(){
+        const footer = document.querySelector('.footer');
+        const footerContent = document.querySelector('.footer-content');
+        footer.removeChild(footerContent);
+    }
+
     getPlayerBoardNode(gameboard){
         const grid = document.createElement('div');
         grid.classList.add('gb-grid')

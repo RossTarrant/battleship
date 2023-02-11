@@ -85,3 +85,24 @@ body{
     font-size: 24px;
     margin: 20px;
 }
+
+.footer-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.footer-text{
+    font-size: 24px;
+}
+
+.footer-restartBtn{
+    background-color: rgb(160, 159, 159);
+    width: 100px;
+    border-radius: 10px;
+    cursor: pointer;
+}

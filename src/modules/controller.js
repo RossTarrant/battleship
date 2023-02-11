@@ -29,7 +29,7 @@ export class controller{
         this.myUI.renderBoards(this.playerBoard, this.compBoard);
         setTimeout(() => {
             this.computerAttack();
-        }, 1000);
+        }, 0);
     }
 
     computerAttack(){
@@ -61,7 +61,26 @@ export class controller{
 
     winGame(winner){
         this.gameActive = false;
-        alert(`${winner} wins!`)
+        this.myUI.renderWinnerFooter(winner);
+        const restartBtn = document.querySelector('.footer-restartBtn');
+        restartBtn.addEventListener('click', () => {
+            this.restartGame();
+        })
+    }
+
+    restartGame(){
+        this.myUI.deleteHeader();
+        this.myUI.deleteBoards();
+        this.myUI.deleteFooter();
+        this.player = Player('Player', 'player');
+        this.computer = Player('Computer', 'comp');
+        this.currentStatus = new status();
+        this.playerBoard = Gameboard(this.currentStatus);
+        this.compBoard = Gameboard(this.currentStatus);
+        this.gameActive = true;
+        this.shipsPlaced = 0;
+        this.myUI = new UI();
+        this.placement();
     }
 
     addPlacementHandlers(){
