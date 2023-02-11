@@ -1,17 +1,34 @@
-import { thisTypeAnnotation } from "@babel/types";
 import { Gameboard } from "../factories/Gameboard";
 
 export class AI{
     constructor(board){
         this.knownHits = [];
+        this.hitAttempts = [];
         this.queue = [];
+        this.lastShot = '0,0';
     }
 
-    getMove(board){
+    getMove(gameboard){
         // If no known hits, return random coordinate
-        let coord = this.randomCoord(board);
-        // If there is a known hit and ship not sunk, attack adjacent cells
-        // Continue until sunk
+        let coord = this.randomCoord(gameboard);
+        
+        if(gameboard.board.get(this.lastShot)?.isSunk()===true){
+            console.log(123)
+            this.queue = [];
+        }
+
+        if(this.queue.length > 0){
+            coord = this.queue.shift();
+        }
+        if(gameboard.board.get(coord)!==null){
+            this.queue.shift()
+            for(let adjCoord of this.getAdjacentCoords(coord)){
+                this.queue.push(adjCoord);
+            }
+            this.queue = this.cleanQueue(this.queue);
+        }
+        this.hitAttempts.push(coord);
+        this.lastShot = coord;
         return coord;
     }
 
@@ -19,6 +36,18 @@ export class AI{
         return gameboard.board.get(coord).isSunk();
     }
 
+    cleanQueue(queue){
+        let toReturn = [];
+        console.log('Queue', queue)
+        for(let coord of queue){
+            if(!(this.hitAttempts.includes(coord))){
+                toReturn.push(coord);
+            }
+        }
+        console.log('ToReturn - ', toReturn)
+        return toReturn;
+    }
+    
     getAdjacentCoords(coord){
 
         let adjacentCoords = [];
@@ -34,6 +63,7 @@ export class AI{
         let yCoord = Number(coord[2]);
 
         for(let adjacent of ADJACENCT_MUTATIONS){
+            if(xCoord+adjacent[0] < 10 && xCoord+adjacent[0] >= 0 && yCoord+adjacent[1] < 10 && yCoord+adjacent[1] >= 0)
             adjacentCoords.push(`${xCoord+adjacent[0]},${yCoord+adjacent[1]}`);
         }
 
@@ -45,7 +75,7 @@ export class AI{
         let x = Math.floor(Math.random() * 10);
         let y = Math.floor(Math.random() * 10);
         let coord = `${[x,y]}`;
-        while(board.missedAttacks.includes(coord)){
+        while(this.hitAttempts.includes(coord)){
             x = Math.floor(Math.random() * 10);
             y = Math.floor(Math.random() * 10);
             coord = `${[x,y]}`;

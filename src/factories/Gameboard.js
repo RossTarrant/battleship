@@ -56,7 +56,7 @@ export const Gameboard = (status) => {
             status.setStatus('attack missed!')
             return false;
         }
-        else if(board.get(coords).hasOwnProperty('hits')){
+        else if(board.get(coords)?.hasOwnProperty('hits')){
             board.get(coords).hit();
             successfulAttacks.push(coords);
             board.get(coords).isSunk() ? status.setStatus('attack hit and sunk a ship!'): status.setStatus('attack hit a ship!')
