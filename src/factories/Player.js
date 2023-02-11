@@ -1,6 +1,9 @@
+import { AI } from "../modules/computerAI";
+
 export const Player = (name, type) => {
     const playerName = name;
     const playerType = type;
+    const compAI = new AI();
 
     const getName = function(){
         return playerName;
@@ -15,11 +18,7 @@ export const Player = (name, type) => {
     }
 
     const compAttack = function(board){
-        let coord = randomCoord();
-        while(board.missedAttacks.includes(coord)){
-            coord = randomCoord();
-        }
-        board.receiveAttack(coord);
+        board.receiveAttack(compAI.getMove(board));
     }
 
     const randomCoord = function(){
