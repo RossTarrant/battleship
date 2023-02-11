@@ -29,7 +29,7 @@ export class controller{
         this.myUI.renderBoards(this.playerBoard, this.compBoard);
         setTimeout(() => {
             this.computerAttack();
-        }, 1000);
+        }, 1200);
     }
 
     computerAttack(){
