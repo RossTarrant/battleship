@@ -22,7 +22,7 @@ export class controller{
 
     takeTurn(x, y){
         this.player.attack(this.compBoard,`${x},${y}`);
-        if(this.compBoard.allShipsSunk()){this.winGame(this.player.getName())};
+        if(this.compBoard.allShipsSunk() && this.gameActive === true){this.winGame(this.player.getName())};
         this.myUI.deleteHeader();
         this.myUI.renderHeader(this.player.getName(), this.currentStatus.getStatus())
         this.myUI.deleteBoards();
@@ -34,7 +34,7 @@ export class controller{
 
     computerAttack(){
         this.computer.attack(this.playerBoard);
-        if(this.playerBoard.allShipsSunk()){this.winGame(this.computer.getName())};
+        if(this.playerBoard.allShipsSunk() && this.gameActive === true){this.winGame(this.computer.getName())};
         this.myUI.deleteHeader();
         this.myUI.renderHeader(this.computer.getName(), this.currentStatus.getStatus())
         this.myUI.deleteBoards();
